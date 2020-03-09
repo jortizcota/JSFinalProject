@@ -1,3 +1,6 @@
+
+
+
 let fromStorage = JSON.parse(localStorage.getItem("boxes"));
 let current_turn = document.getElementById("turn");
 let reset_btn = document.getElementById("button-play-again");
@@ -19,6 +22,17 @@ window.addEventListener("load", () => {
   }
   reset_btn.addEventListener("click", reset);
 });
+
+function reset() {
+    ticks.boxes = [];
+  
+    for (let i = 0; i < box.length; i++) {
+      box[i].innerHTML = "";
+      box[i].dataset.id = i;
+      box[i].addEventListener("click", play);
+    }
+
+  }
 
 function ChangePlayer() {
   ticks.turn = ticks.turn === "X" ? "O" : "X";
