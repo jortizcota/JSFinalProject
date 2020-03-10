@@ -1,9 +1,17 @@
-
-
+let ticks = {
+  boxes: [],
+  turn: "X",
+  score_board: {
+    x: 0,
+    o: 0
+  }
+};
 
 let fromStorage = JSON.parse(localStorage.getItem("boxes"));
 let current_turn = document.getElementById("turn");
 let reset_btn = document.getElementById("button-play-again");
+let X = document.getElementById("scoreboard-x");
+let O = document.getElementById("scoreboard-o");
 let box = document.getElementsByClassName("game-square");
 
 window.addEventListener("load", () => {
@@ -14,6 +22,7 @@ window.addEventListener("load", () => {
     }
   }
 
+  updateScore();
   current_turn.innerText = ticks.turn;
 
   for (let i = 0; i < box.length; i++) {
@@ -23,16 +32,25 @@ window.addEventListener("load", () => {
   reset_btn.addEventListener("click", reset);
 });
 
-function reset() {
-    ticks.boxes = [];
-  
-    for (let i = 0; i < box.length; i++) {
-      box[i].innerHTML = "";
-      box[i].dataset.id = i;
-      box[i].addEventListener("click", play);
-    }
+function saveToLocalStorage(data) {
+  localStorage.setItem("boxes", JSON.stringify(data));
+}
 
+function updateScore() {
+  X.innerText = `${ticks.score_board.x}`;
+  O.innerText = `${ticks.score_board.o}`;
+}
+
+function reset() {
+  ticks.boxes = [];
+
+  for (let i = 0; i < box.length; i++) {
+    box[i].innerHTML = "";
+    box[i].dataset.id = i;
+    box[i].addEventListener("click", play);
   }
+  saveToLocalStorage(ticks);
+}
 
 function ChangePlayer() {
   ticks.turn = ticks.turn === "X" ? "O" : "X";
@@ -133,4 +151,7 @@ function play(event) {
     }
     reset();
   }
+
+  updateScore();
+  saveToLocalStorage(ticks);
 }
